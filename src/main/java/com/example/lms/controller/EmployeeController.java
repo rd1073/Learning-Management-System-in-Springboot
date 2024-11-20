@@ -19,9 +19,9 @@ public class EmployeeController {
         return ResponseEntity.ok("Admin registered successfully!");
     }
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity<String> login(@RequestParam String username, @RequestParam String password) {
         String result = employeeService.authenticateAdmin(username, password);
         return ResponseEntity.ok(result);
-    }
+    }*/
 }
