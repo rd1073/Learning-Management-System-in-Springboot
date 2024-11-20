@@ -106,8 +106,9 @@ public class Employee {
     }
 
     public enum Role {
-        Admin, Employee, Mentor
+        ADMIN, EMPLOYEE, MENTOR
     }
+    
 
     @Override
     public String toString() {
