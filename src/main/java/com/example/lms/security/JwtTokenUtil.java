@@ -63,6 +63,7 @@ package com.example.lms.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Component;
 
@@ -78,7 +79,7 @@ public class JwtTokenUtil {
 
     // Method to get the signing key from the SECRET_KEY string
     
-    private SecretKey getSigningKey() {
+    public SecretKey getSigningKey() {
         SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         // Add a log to check the key used
         System.out.println("Signing Key: " + key);
@@ -137,5 +138,14 @@ public class JwtTokenUtil {
     public boolean validateToken(String token, String username) {
         return (username.equals(extractUsername(token)) && !isTokenExpired(token));
     }
+
+    public String extractTokenFromRequest(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if (header != null && header.startsWith("Bearer ")) {
+            return header.substring(7);
+        }
+        return null;
+    }
+    
 }
 
