@@ -6,6 +6,7 @@ import com.example.lms.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,16 +31,7 @@ public class AuthenticationController {
         // Authenticate the user using the service method
         String response = employeeService.authenticateAdmin(username, password);
         
-        /*if (response.startsWith("Admin logged in")) {
-            String role = "ADMIN";  // Fetch role from the database if necessary
-            String token = jwtTokenUtil.generateToken(username, role);
-            
-            // Return the token in JSON format
-            return ResponseEntity.ok().body(new JwtResponse("Bearer " + token));
-        } else {
-            // Return unauthorized error if authentication fails
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-        }*/
+        
         // Check the response to decide on the status code
         if (response.startsWith("Bearer ")) {
             // Token generation successful
@@ -70,9 +62,10 @@ public class AuthenticationController {
     public class ProtectedController {
 
     @GetMapping("/protect")
-  
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
-    @PreAuthorize("hasAuthority('ADMIN')")
+
+    @PreAuthorize("hasRole('ADMIN')")
+    //@Secured("ROLE_ADMIN")
+    //@PreAuthorize("hasAuthority('ADMIN')")
 
     public String getProtectedData() {
         return "This is a protected endpoint accessible only by admins.";

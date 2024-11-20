@@ -60,6 +60,7 @@ public class JwtTokenUtil {
 
 package com.example.lms.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -87,16 +88,7 @@ public class JwtTokenUtil {
     }
     
 
-    // Generate JWT Token with Role prefix as 'ROLE_'
-    /*public String generateToken(String username, String role) {
-        return Jwts.builder()
-                .setSubject(username)
-                .claim("role", "ROLE_" + role)  // Ensure role is prefixed with 'ROLE_'
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512)  // Sign with the same key
-                .compact();
-    }*/
+     
 
     public String generateToken(String username, String role) {
         return Jwts.builder()
@@ -146,6 +138,8 @@ public class JwtTokenUtil {
         }
         return null;
     }
+     
+
     
 }
 
