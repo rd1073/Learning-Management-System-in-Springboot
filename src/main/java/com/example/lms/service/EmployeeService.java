@@ -26,74 +26,39 @@ public class EmployeeService {
     }
 
     // Register a new admin
-    public Employee registerAdmin(Employee employee) {
+   public Employee registerAdmin(Employee employee) {
         employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-        employee.setRole(Employee.Role.ADMIN); // Ensure the role is set to Admin
+        //employee.setRole(Employee.Role.ADMIN); // Ensure the role is set to Admin
+        if (employee.getRole() == null) {
+            throw new IllegalArgumentException("Role must be specified for the employee.");
+        }
+    
+        // Save the employee with the provided role
         return employeeRepository.save(employee);
+        //return employeeRepository.save(employee);
     }
+
+     
+
 
     // Find user by username
     public Optional<Employee> findByUsername(String username) {
         return employeeRepository.findByUsername(username);
     }
 
-    // Authenticate admin login and return JWT token if successful
-    /*public String authenticateAdmin(String username, String password) {
-        Optional<Employee> employeeOptional = employeeRepository.findByUsername(username);
-        
-        if (employeeOptional.isEmpty()) {
-            return "User not found.";
-        }
-
-        Employee employee = employeeOptional.get();
-        
-        // Verify the password
-        if (passwordEncoder.matches(password, employee.getPassword())) {
-            // Check if the user has the role of Admin
-            if (employee.getRole() == Employee.Role.ADMIN) {
-                // Generate the JWT token
-                String token = jwtTokenUtil.generateToken(username, "ROLE_ADMIN");
-                return token;  // Return the JWT token
-            } else {
-                return "Access denied. Only admins can log in.";
-            }
-        } else {
-            return "Invalid credentials.";
-        }*/
+     
         public String authenticateAdmin(String username, String password) {
         Employee employee = employeeRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (passwordEncoder.matches(password, employee.getPassword()) && employee.getRole() == Employee.Role.ADMIN) {
+        if (passwordEncoder.matches(password, employee.getPassword())) {
             return "Bearer " + jwtTokenUtil.generateToken(employee.getUsername(), employee.getRole().name());
         } else {
             throw new BadCredentialsException("Invalid username or password");
         }
     }
 
-       /* public String authenticateAdmin(String username, String password) {
-            Optional<Employee> employeeOptional = employeeRepository.findByUsername(username);
         
-            if (employeeOptional.isEmpty()) {
-                return "User not found.";
-            }
-        
-            Employee employee = employeeOptional.get();
-        
-            // Verify the password
-            if (passwordEncoder.matches(password, employee.getPassword())) {
-                // Check if the user has the role of Admin
-                if (employee.getRole() == Employee.Role.ADMIN) {
-                    // Generate the JWT token
-                    String token = jwtTokenUtil.generateToken(username, "ROLE_ADMIN");
-                    return "Bearer " + token;  // Return the JWT token
-                } else {
-                    return "Access denied. Only admins can log in.";
-                }
-            } else {
-                return "Invalid credentials.";
-            }
-        }*/
         
     }
 
