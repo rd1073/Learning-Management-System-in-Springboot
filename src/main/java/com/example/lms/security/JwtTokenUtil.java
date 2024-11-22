@@ -28,19 +28,7 @@ public class JwtTokenUtil {
         return key;
     }
     
-
-     
-
     /*public String generateToken(String username, String role) {
-        return Jwts.builder()
-                .setSubject(username)
-                .claim("role", role)  // Use role as-is (assumes it already includes "ROLE_")
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS512)  // Sign with the same key
-                .compact();
-    }*/
-    public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)  // Use the role as-is (without "ROLE_" prefix)
@@ -49,6 +37,8 @@ public class JwtTokenUtil {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
+
+     
     
     
 
@@ -58,7 +48,7 @@ public class JwtTokenUtil {
                 .setSigningKey(getSigningKey())  // Use the same key for parsing
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
+                .getBody();
                 .getSubject();
     }
 
@@ -76,6 +66,7 @@ public class JwtTokenUtil {
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
+    
 
     // Validate token by username and expiration check
     public boolean validateToken(String token, String username) {
@@ -97,6 +88,42 @@ public class JwtTokenUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }*/
+
+    public String generateToken(String username, String role) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    public boolean validateToken(String token, String username) {
+        String tokenUsername = extractUsername(token);
+        return tokenUsername.equals(username) && !isTokenExpired(token);
+    }
+
+    public String extractUsername(String token) {
+        return extractClaims(token).getSubject();
+    }
+
+    public Claims extractClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public boolean isTokenExpired(String token) {
+        return extractClaims(token).getExpiration().before(new Date());
+    }
+
+    public String extractTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        return (bearerToken != null && bearerToken.startsWith("Bearer ")) ? bearerToken.substring(7) : null;
     }
      
 

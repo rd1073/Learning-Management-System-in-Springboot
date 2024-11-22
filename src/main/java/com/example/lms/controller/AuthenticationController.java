@@ -59,15 +59,5 @@ public class AuthenticationController {
         }
     }
 
-    public class ProtectedController {
-
-        @GetMapping("/add-mentor")
-        //@PreAuthorize("hasRole('ROLE_ADMIN')")
-        //@PreAuthorize("hasRole('ROLE_ADMIN')")
-       
-        public String getProtectedData() {
-            return "This is a protected endpoint accessible only by admins to add mentors";
-        }
-        
-}
+    
 }

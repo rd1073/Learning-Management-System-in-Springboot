@@ -4,6 +4,8 @@ import com.example.lms.entity.Employee;
 import com.example.lms.repository.EmployeeRepository;
 import com.example.lms.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,8 +60,18 @@ public class EmployeeService {
         } else {
             return "Invalid credentials.";
         }*/
-
         public String authenticateAdmin(String username, String password) {
+        Employee employee = employeeRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (passwordEncoder.matches(password, employee.getPassword()) && employee.getRole() == Employee.Role.ADMIN) {
+            return "Bearer " + jwtTokenUtil.generateToken(employee.getUsername(), employee.getRole().name());
+        } else {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+    }
+
+       /* public String authenticateAdmin(String username, String password) {
             Optional<Employee> employeeOptional = employeeRepository.findByUsername(username);
         
             if (employeeOptional.isEmpty()) {
@@ -81,7 +93,7 @@ public class EmployeeService {
             } else {
                 return "Invalid credentials.";
             }
-        }
+        }*/
         
     }
 
