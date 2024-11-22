@@ -1,63 +1,4 @@
-/*package com.example.lms.security;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-
-import org.springframework.stereotype.Component;
-
-import java.util.Date;
-
-import javax.crypto.SecretKey;
-
-@Component
-public class JwtTokenUtil {
-
-     
-    private static final String SECRET_KEY = "your_super_secure_512_bit_secret_key_here_that_is_64_characters!";
- // Use a more secure key in production
-    private static final long EXPIRATION_TIME = 86400000;
-    SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    // 24 hours
-
-    public String generateToken(String username, String role) {
-
-
-        return Jwts.builder()
-                .setSubject(username)
-                 
-                .claim("role", "ROLE_" + role)  // Ensure role is prefixed with 'ROLE_'
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(secretKey) 
-                .compact();
-    }
-
-    public String extractUsername(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return Jwts.parser()
-                .setSigningKey(secretKey)
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration();
-    }
-
-    public boolean validateToken(String token, String username) {
-        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
-    }
-}*/
-
+ 
 package com.example.lms.security;
 
 import io.jsonwebtoken.Claims;
@@ -90,7 +31,7 @@ public class JwtTokenUtil {
 
      
 
-    public String generateToken(String username, String role) {
+    /*public String generateToken(String username, String role) {
         return Jwts.builder()
                 .setSubject(username)
                 .claim("role", role)  // Use role as-is (assumes it already includes "ROLE_")
@@ -98,7 +39,17 @@ public class JwtTokenUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS512)  // Sign with the same key
                 .compact();
+    }*/
+    public String generateToken(String username, String role) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("role", role)  // Use the role as-is (without "ROLE_" prefix)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
+                .compact();
     }
+    
     
 
     // Extract the username from the token
@@ -128,6 +79,7 @@ public class JwtTokenUtil {
 
     // Validate token by username and expiration check
     public boolean validateToken(String token, String username) {
+        System.out.println("Validating token for user: " + username);
         return (username.equals(extractUsername(token)) && !isTokenExpired(token));
     }
 
@@ -136,7 +88,15 @@ public class JwtTokenUtil {
         if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7);
         }
+        System.out.println("Token not found in request");
         return null;
+    }
+    private Claims parseClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
      
 

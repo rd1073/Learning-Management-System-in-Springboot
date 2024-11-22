@@ -48,18 +48,16 @@ public class SecurityConfig {
     @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .csrf().disable() // Disable CSRF since we use JWTs (stateless sessions)
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Enforce stateless session
-        .and()
-        .authorizeHttpRequests()
-        .requestMatchers("/api/register", "/api/login", "/error").permitAll() // Publicly accessible endpoints
-        .requestMatchers("/api/admin/**", "/api/protect").hasRole("ADMIN") // Restricted to ADMIN role
-        .anyRequest().authenticated() // Secure all other endpoints
-        .and()
-        .logout().permitAll(); // Allow logout endpoint
-
-    // Add JWT filter before the UsernamePasswordAuthenticationFilter
-    http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        .csrf().disable() 
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Disable CSRF since we use JWTs (stateless sessions)
+         .and()
+         .authorizeHttpRequests(auth -> auth
+         .requestMatchers("/api/register", "/api/login", "/error").permitAll() // Publicly accessible endpoints
+         .requestMatchers("/api/admin/**", "/api/add-mentor").hasAuthority("ROLE_ADMIN") // Restricted to ADMIN role
+         .anyRequest().authenticated() // Secure all other endpoints
+     ) 
+        
+        .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
     return http.build();
 }
