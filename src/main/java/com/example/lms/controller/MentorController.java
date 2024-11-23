@@ -30,9 +30,7 @@ public class MentorController {
     public ResponseEntity<?> createMentor(@RequestBody MentorCreationRequest request) {
         try{
         MentorDetail createdMentor = mentorService.createMentor(
-                request.getPrimaryInfo(),
-                 
-                request.getDateOfMentorship()
+                request
         );
         return new ResponseEntity<>(createdMentor, HttpStatus.CREATED);
         
