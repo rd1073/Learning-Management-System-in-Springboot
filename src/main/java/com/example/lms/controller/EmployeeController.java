@@ -1,6 +1,6 @@
 package com.example.lms.controller;
 
-import com.example.lms.entity.Employee;
+import com.example.lms.entity.EmployeePrimaryInformation;
 import com.example.lms.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +12,14 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
-
+    //used to register an employee
     @PostMapping("/register")
-    public ResponseEntity<String> registerAdmin(@RequestBody Employee employee) {
+    public ResponseEntity<String> registerAdmin(@RequestBody EmployeePrimaryInformation employee) {
         employeeService.registerAdmin(employee);
         return ResponseEntity.ok("Admin registered successfully!");
     }
+
+      
 
      
 }

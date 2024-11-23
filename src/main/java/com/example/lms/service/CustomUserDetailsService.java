@@ -1,7 +1,7 @@
 package com.example.lms.service;
 
-import com.example.lms.entity.Employee;
-import com.example.lms.repository.EmployeeRepository;
+import com.example.lms.entity.EmployeePrimaryInformation;
+import com.example.lms.repository.EmployeePrimaryInformationRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,15 +15,15 @@ import java.util.Collections;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeePrimaryInformationRepository employeeRepository;
 
-    public CustomUserDetailsService(EmployeeRepository employeeRepository) {
+    public CustomUserDetailsService(EmployeePrimaryInformationRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Employee employee = employeeRepository.findByUsername(username)
+        EmployeePrimaryInformation employee = employeeRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         /*return User.builder()

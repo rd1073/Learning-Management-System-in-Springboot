@@ -2,7 +2,7 @@ package com.example.lms.controller;
 
 import com.example.lms.security.JwtTokenUtil;
 import com.example.lms.service.EmployeeService;
-import com.example.lms.entity.Employee;
+import com.example.lms.entity.EmployeePrimaryInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Employee loginRequest) {
+    public ResponseEntity<?> login(@RequestBody EmployeePrimaryInformation loginRequest) {
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
 
