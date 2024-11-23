@@ -37,7 +37,8 @@ public class MentorService {
     private final EmployeeContactInfoRepository contactInfoRepository;
     private final EmployeeExperienceInfoRepository experienceInfoRepository;
     private final EmployeeTechnicalSkillsInfoRepository technicalSkillsInfoRepository;
-    private final EmployeeSecondaryInfoRepository secondaryInfoRepository; // New Repository
+    private final EmployeeSecondaryInfoRepository secondaryInfoRepository;
+    private final PasswordEncoder passwordEncoder; // New Repository
 
     @Autowired
     public MentorService(MentorRepository mentorRepository, EmployeePrimaryInformationRepository employeePrimaryInfoRepository, EmployeeAddressInfoRepository addressInfoRepository,
@@ -45,7 +46,9 @@ public class MentorService {
     EmployeeEducationInfoRepository educationInfoRepository,
     EmployeeContactInfoRepository contactInfoRepository,
     EmployeeExperienceInfoRepository experienceInfoRepository,
-    EmployeeTechnicalSkillsInfoRepository technicalSkillsInfoRepository,         EmployeeSecondaryInfoRepository secondaryInfoRepository // Inject Repository
+    EmployeeTechnicalSkillsInfoRepository technicalSkillsInfoRepository,     
+        EmployeeSecondaryInfoRepository secondaryInfoRepository,
+        PasswordEncoder passwordEncoder // Inject Repository
     ) {
         this.mentorRepository = mentorRepository;
         this.employeePrimaryInfoRepository = employeePrimaryInfoRepository;
@@ -56,6 +59,7 @@ public class MentorService {
         this.experienceInfoRepository = experienceInfoRepository;
         this.technicalSkillsInfoRepository = technicalSkillsInfoRepository;
         this.secondaryInfoRepository = secondaryInfoRepository;
+        this.passwordEncoder = passwordEncoder; 
 
 
     }
@@ -69,6 +73,15 @@ public class MentorService {
         //EmployeePrimaryInformation savedPrimaryInfo = employeePrimaryInfoRepository.save(primaryInfo);
         EmployeePrimaryInformation primaryInfo = request.getPrimaryInfo();
         primaryInfo.setRole(EmployeePrimaryInformation.Role.MENTOR);
+
+        // Hash the password provided by the admin
+        String rawPassword = request.getPassword();
+        if (rawPassword == null || rawPassword.isBlank()) {
+            throw new IllegalArgumentException("Password cannot be null or blank.");
+        }
+        String hashedPassword = passwordEncoder.encode(rawPassword);
+        primaryInfo.setPassword(hashedPassword);
+        
         EmployeePrimaryInformation savedPrimaryInfo = employeePrimaryInfoRepository.save(primaryInfo);
 
         // Step 3: Save Mentorship details

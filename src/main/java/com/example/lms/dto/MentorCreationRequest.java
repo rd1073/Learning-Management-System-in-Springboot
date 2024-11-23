@@ -27,4 +27,5 @@ public class MentorCreationRequest {
     private List<EmployeeExperienceInfo> experienceInfos;
     private List<EmployeeTechnicalSkillsInfo> technicalSkills;
     private EmployeeSecondaryInfo secondaryInfo; 
+    private String password;
 }
