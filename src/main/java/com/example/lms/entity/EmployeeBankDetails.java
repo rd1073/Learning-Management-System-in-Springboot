@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 @Table(name = "employee_bank_details")
 public class EmployeeBankDetails {
 
+    
+    private Long id;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 

@@ -190,12 +190,9 @@ public MentorDetail updateMentorDetails(Long employeeId, MentorUpdateRequest req
         });
     }
 
-    // Fetch and return the updated Mentor Detail
-    return mentorRepository.findById(employeeId)
-            .orElseThrow(() -> new EntityNotFoundException("Mentor not found for ID: " + employeeId));
-}
+    
 
-    /*// Update Bank Details
+    // Update Bank Details
     Optional.ofNullable(request.getBankDetails()).ifPresent(bankDetails -> {
         EmployeeBankDetails existingBankDetails = bankDetailsRepository
                 .findById(employeeId)
@@ -240,7 +237,12 @@ public MentorDetail updateMentorDetails(Long employeeId, MentorUpdateRequest req
             skill.setEmployeeId(employeeId);
             technicalSkillsInfoRepository.save(skill);
         });
-    }*/
+    }
+
+    // Fetch and return the updated Mentor Detail
+    return mentorRepository.findById(employeeId)
+            .orElseThrow(() -> new EntityNotFoundException("Mentor not found for ID: " + employeeId));
+}
 
    
 }
