@@ -3,7 +3,11 @@ package com.example.lms.controller;
 import com.example.lms.security.JwtTokenUtil;
 import com.example.lms.service.EmployeeService;
 import com.example.lms.service.MentorService;
+
+import jakarta.validation.Valid;
+
 import com.example.lms.dto.MentorCreationRequest;
+import com.example.lms.dto.MentorUpdateRequest;
 import com.example.lms.entity.EmployeePrimaryInformation;
 import com.example.lms.entity.MentorDetail;
 
@@ -38,4 +42,28 @@ public class MentorController {
         return new ResponseEntity<>("Failed to create mentor: " + e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+ 
+    // Endpoint to fully update mentor details by employee ID
+    @PatchMapping("/update/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<MentorDetail> updateMentorDetails(@PathVariable Long employeeId,
+                                                             @RequestBody MentorUpdateRequest request) {
+        MentorDetail updatedMentor = mentorService.updateMentorDetails(employeeId, request);
+        return new ResponseEntity<>(updatedMentor, HttpStatus.OK);
+    }
+ 
+
+ 
+ 
 }

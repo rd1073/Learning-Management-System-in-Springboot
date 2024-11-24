@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface EmployeeTechnicalSkillsInfoRepository extends JpaRepository<EmployeeTechnicalSkillsInfo, Long> {
+    void deleteByEmployeeId(Long employeeId);
     List<EmployeeTechnicalSkillsInfo> findByEmployeeId(Long employeeId);
 }

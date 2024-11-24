@@ -1,6 +1,7 @@
 package com.example.lms.service;
 
 import com.example.lms.dto.MentorCreationRequest;
+import com.example.lms.dto.MentorUpdateRequest;
 import com.example.lms.entity.EmployeeBankDetails;
 import com.example.lms.entity.EmployeePrimaryInformation;
 import com.example.lms.entity.EmployeeSecondaryInfo;
@@ -16,7 +17,10 @@ import com.example.lms.repository.EmployeeTechnicalSkillsInfoRepository;
 import com.example.lms.repository.MentorRepository;
 import com.example.lms.security.JwtTokenUtil;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import java.util.Optional;
+
 
 import java.time.LocalDate;
 
@@ -81,7 +85,7 @@ public class MentorService {
         }
         String hashedPassword = passwordEncoder.encode(rawPassword);
         primaryInfo.setPassword(hashedPassword);
-        
+
         EmployeePrimaryInformation savedPrimaryInfo = employeePrimaryInfoRepository.save(primaryInfo);
 
         // Step 3: Save Mentorship details
@@ -140,4 +144,106 @@ public class MentorService {
 
         //return mentorRepository.save(mentorDetail);
     }
+
+
+
+
+
+
+
+
+
+    //update mentor details
+    @Transactional
+public MentorDetail updateMentorDetails(Long employeeId, MentorUpdateRequest request) {
+    if (request == null) {
+        throw new IllegalArgumentException("Request cannot be null");
+    }
+
+    // Update Primary Information
+    Optional.ofNullable(request.getPrimaryInfo()).ifPresent(primaryInfo -> {
+        EmployeePrimaryInformation existingPrimaryInfo = employeePrimaryInfoRepository
+                .findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException("Employee Primary Information not found for ID: " + employeeId));
+        existingPrimaryInfo.setName(primaryInfo.getName());
+        existingPrimaryInfo.setEmail(primaryInfo.getEmail());
+        employeePrimaryInfoRepository.save(existingPrimaryInfo);
+    });
+
+    // Update Secondary Information
+    Optional.ofNullable(request.getSecondaryInfo()).ifPresent(secondaryInfo -> {
+        EmployeeSecondaryInfo existingSecondaryInfo = secondaryInfoRepository
+                .findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException("Employee Secondary Information not found for ID: " + employeeId));
+        existingSecondaryInfo.setDateOfBirth(secondaryInfo.getDateOfBirth());
+        existingSecondaryInfo.setNationality(secondaryInfo.getNationality());
+        existingSecondaryInfo.setMaritalStatus(secondaryInfo.getMaritalStatus());
+        secondaryInfoRepository.save(existingSecondaryInfo);
+    });
+
+    // Update Address Information
+    if (request.getAddresses() != null) {
+        addressInfoRepository.deleteByEmployeeId(employeeId);
+        request.getAddresses().forEach(address -> {
+            address.setEmployeeId(employeeId);
+            addressInfoRepository.save(address);
+        });
+    }
+
+    // Fetch and return the updated Mentor Detail
+    return mentorRepository.findById(employeeId)
+            .orElseThrow(() -> new EntityNotFoundException("Mentor not found for ID: " + employeeId));
 }
+
+    /*// Update Bank Details
+    Optional.ofNullable(request.getBankDetails()).ifPresent(bankDetails -> {
+        EmployeeBankDetails existingBankDetails = bankDetailsRepository
+                .findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException("Bank Details not found"));
+        existingBankDetails.setAccountNumber(bankDetails.getAccountNumber());
+        existingBankDetails.setBankName(bankDetails.getBankName());
+        existingBankDetails.setIfscCode(bankDetails.getIfscCode());
+        bankDetailsRepository.save(existingBankDetails);
+    });
+
+    // Update Education Information
+    if (request.getEducationInfos() != null) {
+        educationInfoRepository.deleteByEmployeeId(employeeId);
+        request.getEducationInfos().forEach(education -> {
+            education.setEmployeeId(employeeId);
+            educationInfoRepository.save(education);
+        });
+    }
+
+    // Update Contact Information
+    if (request.getContactInfos() != null) {
+        contactInfoRepository.deleteByEmployeeId(employeeId);
+        request.getContactInfos().forEach(contact -> {
+            contact.setEmployeeId(employeeId);
+            contactInfoRepository.save(contact);
+        });
+    }
+
+    // Update Experience Information
+    if (request.getExperienceInfos() != null) {
+        experienceInfoRepository.deleteByEmployeeId(employeeId);
+        request.getExperienceInfos().forEach(experience -> {
+            experience.setEmployeeId(employeeId);
+            experienceInfoRepository.save(experience);
+        });
+    }
+
+    // Update Technical Skills
+    if (request.getTechnicalSkills() != null) {
+        technicalSkillsInfoRepository.deleteByEmployeeId(employeeId);
+        request.getTechnicalSkills().forEach(skill -> {
+            skill.setEmployeeId(employeeId);
+            technicalSkillsInfoRepository.save(skill);
+        });
+    }*/
+
+   
+}
+
+
+ 

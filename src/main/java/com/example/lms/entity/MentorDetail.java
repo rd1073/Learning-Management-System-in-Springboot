@@ -9,11 +9,14 @@ import java.time.LocalDate;
 @Table(name = "mentor_detail")
 public class MentorDetail {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
+    @Column(name = "mentor_id")
     private Long mentorId;
 
-    @Column(nullable = false)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 
     @Column(name = "date_of_mentorship", nullable = false)
