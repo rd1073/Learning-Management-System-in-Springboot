@@ -7,10 +7,12 @@ import jakarta.persistence.*;
 public class EmployeeContactInfo {
 
     
-   
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id; 
+
+  
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 
@@ -21,6 +23,14 @@ public class EmployeeContactInfo {
     private String contactValue;
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     
     public Long getEmployeeId() {
         return employeeId;

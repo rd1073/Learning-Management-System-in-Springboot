@@ -13,9 +13,9 @@ public class MentorDetail {
     @Column(name = "mentor_id")
     private Long mentorId;
 
+   
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 

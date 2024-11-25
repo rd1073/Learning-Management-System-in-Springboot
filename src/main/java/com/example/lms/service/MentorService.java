@@ -106,8 +106,10 @@ public class MentorService {
             addressInfoRepository.save(address);
         });
 
-        // Save Bank Details
+         // Save Bank Details
         EmployeeBankDetails bankDetails = request.getBankDetails();
+        //mentorDetail.setEmployeeId(savedPrimaryInfo.getEmployeeId());
+
         bankDetails.setEmployeeId(employeeId);
         bankDetailsRepository.save(bankDetails);
 
