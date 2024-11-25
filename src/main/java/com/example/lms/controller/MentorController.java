@@ -94,7 +94,7 @@ public ResponseEntity<List<EmployeeExperienceInfo>> addExperience(
 
 
 //delete mentor
-@DeleteMapping("/mentors/delete/{employeeId}")
+@DeleteMapping("/delete/{employeeId}")
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public ResponseEntity<String> deleteMentor(@PathVariable Long employeeId) {
     try {
