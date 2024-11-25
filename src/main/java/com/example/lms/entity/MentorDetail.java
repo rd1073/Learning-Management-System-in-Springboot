@@ -9,13 +9,14 @@ import java.time.LocalDate;
 @Table(name = "mentor_detail")
 public class MentorDetail {
 
-    
-    @Column(name = "mentor_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Use IDENTITY for auto-increment
+    @Column(name = "mentor_id", nullable = false, updatable = false)
     private Long mentorId;
+     
 
    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+     
     @Column(name = "employee_id", nullable = false)
     private Long employeeId;
 

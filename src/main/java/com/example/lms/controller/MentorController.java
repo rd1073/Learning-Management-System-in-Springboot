@@ -4,6 +4,7 @@ import com.example.lms.security.JwtTokenUtil;
 import com.example.lms.service.EmployeeService;
 import com.example.lms.service.MentorService;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 import com.example.lms.dto.MentorCreationRequest;
@@ -87,6 +88,36 @@ public ResponseEntity<List<EmployeeExperienceInfo>> addExperience(
     List<EmployeeExperienceInfo> addedExperiences = mentorService.addExperience(employeeId, experienceInfos);
     return ResponseEntity.ok(addedExperiences);
 }
+
+
+
+
+
+//delete mentor
+@DeleteMapping("/mentors/delete/{employeeId}")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+public ResponseEntity<String> deleteMentor(@PathVariable Long employeeId) {
+    try {
+        mentorService.deleteMentor(employeeId);
+        return ResponseEntity.ok("Mentor deleted successfully.");
+    } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Mentor not found.");
+    } catch (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while deleting mentor: " + e.getMessage());
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unknown error occurred.");
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 @PostMapping("/{employeeId}/add-contact")//LEFT

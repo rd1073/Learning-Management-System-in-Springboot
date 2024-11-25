@@ -6,4 +6,6 @@ import com.example.lms.entity.EmployeeSecondaryInfo;
 
 @Repository
 public interface EmployeeSecondaryInfoRepository extends JpaRepository<EmployeeSecondaryInfo, Long> {
+    void deleteByEmployeeId(Long employeeId);
+
 }

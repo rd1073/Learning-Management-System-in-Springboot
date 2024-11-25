@@ -313,6 +313,52 @@ public List<EmployeeTechnicalSkillsInfo> addTechnicalSkills(Long employeeId, Lis
     return technicalSkillsInfoRepository.saveAll(technicalSkillsInfos);
 }
 
+
+
+
+
+
+
+
+
+
+
+//delete
+
+@Transactional(rollbackOn = Exception.class) // Ensure rollback in case of errors
+public void deleteMentor(Long employeeId) {
+    try {
+        // Step 1: Delete Address Info
+        addressInfoRepository.deleteByEmployeeId(employeeId);
+        
+        // Step 2: Delete Bank Details
+        bankDetailsRepository.deleteByEmployeeId(employeeId);
+
+        // Step 3: Delete Contact Info
+        contactInfoRepository.deleteByEmployeeId(employeeId);
+
+        // Step 4: Delete Education Info
+        educationInfoRepository.deleteByEmployeeId(employeeId);
+
+        // Step 5: Delete Experience Info
+        experienceInfoRepository.deleteByEmployeeId(employeeId);
+
+        // Step 6: Delete Technical Skills Info
+        technicalSkillsInfoRepository.deleteByEmployeeId(employeeId);
+
+        // Step 7: Delete Secondary Info
+        secondaryInfoRepository.deleteById(employeeId);
+
+        // Step 8: Delete Mentor Detail
+        mentorRepository.deleteById(employeeId);
+
+        // Step 9: Delete Primary Information
+        employeePrimaryInfoRepository.deleteById(employeeId);
+    } catch (Exception e) {
+        throw new RuntimeException("Error occurred while deleting mentor", e); // Re-throw exception to ensure rollback
+    }
+}
+
 }
 
 
