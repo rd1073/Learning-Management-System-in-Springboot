@@ -3,8 +3,12 @@ package com.example.lms.service;
 import com.example.lms.dto.MentorCreationRequest;
 import com.example.lms.dto.MentorUpdateRequest;
 import com.example.lms.entity.EmployeeBankDetails;
+import com.example.lms.entity.EmployeeContactInfo;
+import com.example.lms.entity.EmployeeEducationInfo;
+import com.example.lms.entity.EmployeeExperienceInfo;
 import com.example.lms.entity.EmployeePrimaryInformation;
 import com.example.lms.entity.EmployeeSecondaryInfo;
+import com.example.lms.entity.EmployeeTechnicalSkillsInfo;
 import com.example.lms.entity.MentorDetail;
 import com.example.lms.repository.EmployeeAddressInfoRepository;
 import com.example.lms.repository.EmployeeBankDetailsRepository;
@@ -19,6 +23,8 @@ import com.example.lms.security.JwtTokenUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 
@@ -223,30 +229,90 @@ public MentorDetail updateMentorDetails(Long employeeId, MentorUpdateRequest req
         });
     }
 
-    // Update Experience Information
-    if (request.getExperienceInfos() != null) {
-        experienceInfoRepository.deleteByEmployeeId(employeeId);
-        request.getExperienceInfos().forEach(experience -> {
-            experience.setEmployeeId(employeeId);
-            experienceInfoRepository.save(experience);
-        });
-    }
-
-    // Update Technical Skills
-    if (request.getTechnicalSkills() != null) {
-        technicalSkillsInfoRepository.deleteByEmployeeId(employeeId);
-        request.getTechnicalSkills().forEach(skill -> {
-            skill.setEmployeeId(employeeId);
-            technicalSkillsInfoRepository.save(skill);
-        });
-    }
+           /* // Update Education Details
+            if (request.getEducationInfos() != null) {
+                educationInfoRepository.deleteByEmployeeId(employeeId);
+                request.getEducationInfos().forEach(education -> {
+                    education.setEmployeeId(employeeId);
+                    educationInfoRepository.save(education);
+                });
+            }*/
+    
+     
 
     // Fetch and return the updated Mentor Detail
     return mentorRepository.findById(employeeId)
             .orElseThrow(() -> new EntityNotFoundException("Mentor not found for ID: " + employeeId));
 }
 
-   
+
+
+
+
+
+
+
+
+// add new mentor details
+@Transactional
+public List<EmployeeEducationInfo> addEducation(Long employeeId, List<EmployeeEducationInfo> educationInfos) {
+    for (EmployeeEducationInfo education : educationInfos) {
+        if (education.getInstitution() == null || education.getInstitution().isBlank()) {
+            throw new IllegalArgumentException("Institution cannot be null or blank");
+        }
+        education.setEmployeeId(employeeId);
+    }
+    return educationInfoRepository.saveAll(educationInfos);
+}
+
+@Transactional
+public List<EmployeeExperienceInfo> addExperience(Long employeeId, List<EmployeeExperienceInfo> experienceInfos) {
+    for (EmployeeExperienceInfo experience : experienceInfos) {
+        if (experience.getCompanyName() == null || experience.getCompanyName().isBlank()) {
+            throw new IllegalArgumentException("Company name cannot be null or blank");
+        }
+        if (experience.getRole() == null || experience.getRole().isBlank()) {
+            throw new IllegalArgumentException("Role cannot be null or blank");
+        }
+        if (experience.getYearsOfExperience() <= 0) {
+            throw new IllegalArgumentException("Years of experience must be greater than 0");
+        }
+        experience.setEmployeeId(employeeId);
+    }
+    return experienceInfoRepository.saveAll(experienceInfos);
+}
+
+
+@Transactional
+public List<EmployeeContactInfo> addContact(Long employeeId, List<EmployeeContactInfo> contactInfos) {
+    for (EmployeeContactInfo contact : contactInfos) {
+        if (contact.getContactType() == null || contact.getContactType().isBlank()) {
+            throw new IllegalArgumentException("Contact type cannot be null or blank");
+        }
+        if (contact.getContactValue() == null || contact.getContactValue().isBlank()) {
+            throw new IllegalArgumentException("Contact value cannot be null or blank");
+        }
+        contact.setEmployeeId(employeeId);
+    }
+    return contactInfoRepository.saveAll(contactInfos);
+}
+
+
+
+@Transactional
+public List<EmployeeTechnicalSkillsInfo> addTechnicalSkills(Long employeeId, List<EmployeeTechnicalSkillsInfo> technicalSkillsInfos) {
+    for (EmployeeTechnicalSkillsInfo skill : technicalSkillsInfos) {
+        if (skill.getSkillName() == null || skill.getSkillName().isBlank()) {
+            throw new IllegalArgumentException("Skill name cannot be null or blank");
+        }
+        if (skill.getSkillLevel() == null ) {
+            throw new IllegalArgumentException("Proficiency level cannot be null or blank");
+        }
+        skill.setEmployeeId(employeeId);
+    }
+    return technicalSkillsInfoRepository.saveAll(technicalSkillsInfos);
+}
+
 }
 
 
