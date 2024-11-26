@@ -34,7 +34,14 @@ public class EmployeePrimaryInformation {
     @Column(nullable = false)
     private Role role;
 
+    @Column(name = "approved", nullable = false)
+    private Boolean approved = false;
+
     // Getters and Setters
+
+    public void setApproved(Boolean approved) {
+        this.approved = approved;
+    }
 
     public Long getEmployeeId() {
         return employeeId;
@@ -120,6 +127,7 @@ public class EmployeePrimaryInformation {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", role=" + role +
+                ", approved=" + approved +
                 '}';
     }
 }

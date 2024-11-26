@@ -41,7 +41,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 String path = request.getServletPath();
 
     // Skip token validation for registration and login
-    if (path.equals("/api/register") || path.equals("/api/login")) {
+    if (path.equals("/api/register") || path.equals("/api/login") || path.equals("/api/employee/register")) {
         chain.doFilter(request, response);
         return;
     }
