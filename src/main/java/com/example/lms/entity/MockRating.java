@@ -5,43 +5,44 @@ import jakarta.persistence.*;
 @Entity
 public class MockRating {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mockNo;
 
-
-    private Integer employeeId;
+    @Id
+    private Long employeeId;
     private String employeeName;
 
-    private Integer panel1Id;
+    private Long panel1Id;
     private String panel1Name;
 
-    private Integer panel2Id;
+    private Long panel2Id;
     private String panel2Name;
 
     
-    private String technology;
-
+ 
     private Double practicalKnowledgeScore;
     private Double theoreticalKnowledgeScore;
 
     private String overallFeedback;
     private String detailedFeedback;
+    private String notes;
+
 
     // Getters and Setters
-    public Long getmockNo() {
+    public Long getMockNo() {
         return mockNo;
     }
 
-    public void setmockId(Long mockNo) {
+    public void setMockNo(Long mockNo) {
         this.mockNo = mockNo;
     }
  
 
-    public Integer getEmployeeId() {
+    public Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(Integer employeeId) {
+    public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -53,11 +54,11 @@ public class MockRating {
         this.employeeName = employeeName;
     }
 
-    public Integer getPanel1Id() {
+    public Long getPanel1Id() {
         return panel1Id;
     }
 
-    public void setPanel1Id(Integer panel1Id) {
+    public void setPanel1Id(Long panel1Id) {
         this.panel1Id = panel1Id;
     }
 
@@ -69,11 +70,11 @@ public class MockRating {
         this.panel1Name = panel1Name;
     }
 
-    public Integer getPanel2Id() {
+    public Long getPanel2Id() {
         return panel2Id;
     }
 
-    public void setPanel2Id(Integer panel2Id) {
+    public void setPanel2Id(Long panel2Id) {
         this.panel2Id = panel2Id;
     }
 
@@ -86,13 +87,7 @@ public class MockRating {
     }
 
      
-    public String getTechnology() {
-        return technology;
-    }
-
-    public void setTechnology(String technology) {
-        this.technology = technology;
-    }
+    
 
     public Double getPracticalKnowledgeScore() {
         return practicalKnowledgeScore;
@@ -125,4 +120,13 @@ public class MockRating {
     public void setDetailedFeedback(String detailedFeedback) {
         this.detailedFeedback = detailedFeedback;
     }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 }
+

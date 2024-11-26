@@ -56,7 +56,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
          //.requestMatchers("/api/admin/**", "/api/add-mentor").hasAuthority("ROLE_ADMIN") // Restricted to ADMIN role
          .requestMatchers("/api/admin/**", "/api/mentors/**","/api/batches/**").hasAuthority("ROLE_ADMIN")
          .requestMatchers("/api/employees/**").hasAuthority("ROLE_EMPLOYEE")
-         .requestMatchers("/api/attendance/mark","api/mock/create").hasAuthority("ROLE_MENTOR")
+         .requestMatchers("/api/attendance/mark","api/mock/create","api/mock-rating").hasAuthority("ROLE_MENTOR")
 
          .anyRequest().authenticated() // Secure all other endpoints
      ) 
