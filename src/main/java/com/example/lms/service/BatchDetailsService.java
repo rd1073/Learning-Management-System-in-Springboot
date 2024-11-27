@@ -12,6 +12,7 @@ import com.example.lms.repository.EmployeePrimaryInformationRepository;
 import com.example.lms.repository.MentorRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,19 @@ public List<EmployeeBatch> getBatchesByEmployeeId(Long employeeId) {
         return batchDetailsRepository.findByMentorId(mentorId);
     }
 
+
+    public List<EmployeePrimaryInformation> getEmployeesInBatch(Long batchId) {
+        // Fetch all EmployeeBatch entries for the given batch ID
+        List<EmployeeBatch> employeeBatchList = employeeBatchRepository.findByBatchId(batchId);
+
+        // Extract employee IDs from the EmployeeBatch entries
+        List<Long> employeeIds = employeeBatchList.stream()
+                .map(EmployeeBatch::getEmployeeId)
+                .collect(Collectors.toList());
+
+        // Fetch and return the primary information for all employees in the batch
+        return employeePrimaryInformationRepository.findAllById(employeeIds);
+    }
     public BatchDetails updateBatch(Long batchId, BatchDetails batchDetails) {
         // Fetch the existing batch using the batch ID
         BatchDetails existingBatch = batchDetailsRepository

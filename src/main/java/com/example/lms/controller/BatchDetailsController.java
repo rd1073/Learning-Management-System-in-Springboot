@@ -58,8 +58,8 @@ public class BatchDetailsController {
 
 
     @GetMapping("/search/{batchId}")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MENTOR')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')
 
     public ResponseEntity<BatchDetails> getBatchById(@PathVariable Long batchId) {
         try {

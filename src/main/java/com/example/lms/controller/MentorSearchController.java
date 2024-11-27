@@ -1,11 +1,15 @@
 package com.example.lms.controller;
 
+import com.example.lms.entity.BatchDetails;
+import com.example.lms.entity.EmployeePrimaryInformation;
+import com.example.lms.service.BatchDetailsService;
 import com.example.lms.service.MentorSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -13,10 +17,48 @@ import java.util.Map;
 public class MentorSearchController {
 
     private final MentorSearchService mentorSearchService;
+    private final BatchDetailsService batchDetailsService;
+
 
     @Autowired
-    public MentorSearchController(MentorSearchService mentorSearchService) {
+    public MentorSearchController(MentorSearchService mentorSearchService, BatchDetailsService batchDetailsService) {
+        this.batchDetailsService = batchDetailsService;
+
         this.mentorSearchService = mentorSearchService;
+    }
+
+
+
+    // Endpoint to get batch details by batch ID
+    @GetMapping("/batch/{batchId}")
+    @PreAuthorize("hasAuthority('ROLE_MENTOR')")
+    public ResponseEntity<?> getBatchById(@PathVariable("batchId") Long batchId) {
+        try {
+            BatchDetails batchDetails = batchDetailsService.getBatchById(batchId);
+            if (batchDetails != null) {
+                return ResponseEntity.ok(batchDetails);
+            } else {
+                return ResponseEntity.status(404).body("Batch not found with ID: " + batchId);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching batch: " + e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/{batchId}/employees")
+    @PreAuthorize("hasAuthority('ROLE_MENTOR')")
+    public ResponseEntity<?> getEmployeesInBatch(@PathVariable("batchId") Long batchId) {
+        try {
+            List<EmployeePrimaryInformation> employees = batchDetailsService.getEmployeesInBatch(batchId);
+            if (employees.isEmpty()) {
+                return ResponseEntity.status(404).body("No employees found for batch ID: " + batchId);
+            }
+            return ResponseEntity.ok(employees);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching employees: " + e.getMessage());
+     
+       }
     }
 
     // Endpoint to search employee details by employee ID
@@ -111,4 +153,9 @@ public class MentorSearchController {
             return ResponseEntity.status(404).body(Map.of("error", e.getMessage()));
         }
     }
+
+
+
+    
+
 }
