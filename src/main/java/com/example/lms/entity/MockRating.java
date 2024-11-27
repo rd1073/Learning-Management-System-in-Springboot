@@ -2,14 +2,16 @@ package com.example.lms.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
+
 @Entity
 public class MockRating {
-    @Id
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mockNo;
 
-    @Id
-    private Long employeeId;
+    @EmbeddedId
+    private MockRatingId id;
+
+    
     private String employeeName;
 
     private Long panel1Id;
@@ -29,23 +31,18 @@ public class MockRating {
 
 
     // Getters and Setters
-    public Long getMockNo() {
-        return mockNo;
+    public MockRatingId getId() {
+        return id;
     }
 
-    public void setMockNo(Long mockNo) {
-        this.mockNo = mockNo;
+    public void setId(MockRatingId id) {
+        this.id = id;
     }
+
+   
  
 
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
-    }
-
+    
     public String getEmployeeName() {
         return employeeName;
     }
