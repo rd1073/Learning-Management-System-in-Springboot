@@ -76,14 +76,7 @@ public class EmployeeUpdateService {
             secondaryInfoRepository.save(existingSecondaryInfo);
         });
 
-        // Update Address Information
-        if (updateRequest.getAddresses() != null) {
-            addressInfoRepository.deleteByEmployeeId(employeeId);
-            updateRequest.getAddresses().forEach(address -> {
-                address.setEmployeeId(employeeId);
-                addressInfoRepository.save(address);
-            });
-        }
+        
 
         // Update Bank Details
         Optional.ofNullable(updateRequest.getBankDetails()).ifPresent(bankDetails -> {
@@ -96,23 +89,9 @@ public class EmployeeUpdateService {
             bankDetailsRepository.save(existingBankDetails);
         });
 
-        // Update Education Information
-        if (updateRequest.getEducationInfos() != null) {
-            educationInfoRepository.deleteByEmployeeId(employeeId);
-            updateRequest.getEducationInfos().forEach(education -> {
-                education.setEmployeeId(employeeId);
-                educationInfoRepository.save(education);
-            });
-        }
+        
 
-        // Update Contact Information
-        if (updateRequest.getContactInfos() != null) {
-            contactInfoRepository.deleteByEmployeeId(employeeId);
-            updateRequest.getContactInfos().forEach(contact -> {
-                contact.setEmployeeId(employeeId);
-                contactInfoRepository.save(contact);
-            });
-        }
+        
     }
 
 

@@ -25,7 +25,9 @@ import com.example.lms.security.JwtTokenUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -162,100 +164,92 @@ public class MentorService {
 
 
 
-
-
-    //update mentor details
+    //update mentor
     @Transactional
-public MentorDetail updateMentorDetails(Long employeeId, MentorUpdateRequest request) {
-    if (request == null) {
-        throw new IllegalArgumentException("Request cannot be null");
-    }
-
-    // Update Primary Information
-    Optional.ofNullable(request.getPrimaryInfo()).ifPresent(primaryInfo -> {
-        EmployeePrimaryInformation existingPrimaryInfo = employeePrimaryInfoRepository
-                .findById(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee Primary Information not found for ID: " + employeeId));
-        existingPrimaryInfo.setName(primaryInfo.getName());
-        existingPrimaryInfo.setEmail(primaryInfo.getEmail());
-        employeePrimaryInfoRepository.save(existingPrimaryInfo);
-    });
-
-    // Update Secondary Information
-    Optional.ofNullable(request.getSecondaryInfo()).ifPresent(secondaryInfo -> {
-        EmployeeSecondaryInfo existingSecondaryInfo = secondaryInfoRepository
-                .findById(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Employee Secondary Information not found for ID: " + employeeId));
-        existingSecondaryInfo.setDateOfBirth(secondaryInfo.getDateOfBirth());
-        existingSecondaryInfo.setNationality(secondaryInfo.getNationality());
-        existingSecondaryInfo.setMaritalStatus(secondaryInfo.getMaritalStatus());
-        secondaryInfoRepository.save(existingSecondaryInfo);
-    });
-
-    // Update Address Information
-    if (request.getAddresses() != null) {
-        addressInfoRepository.deleteByEmployeeId(employeeId);
-        request.getAddresses().forEach(address -> {
-            address.setEmployeeId(employeeId);
-            addressInfoRepository.save(address);
+    public MentorDetail updateMentorDetails(Long employeeId, MentorUpdateRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("Request cannot be null");
+        }
+    
+        // Update Primary Information
+        Optional.ofNullable(request.getPrimaryInfo()).ifPresent(primaryInfo -> {
+            EmployeePrimaryInformation existingPrimaryInfo = employeePrimaryInfoRepository
+                    .findById(employeeId)
+                    .orElseThrow(() -> new EntityNotFoundException("Employee Primary Information not found for ID: " + employeeId));
+            existingPrimaryInfo.setName(primaryInfo.getName());
+            existingPrimaryInfo.setEmail(primaryInfo.getEmail());
+            employeePrimaryInfoRepository.save(existingPrimaryInfo);
         });
+    
+        // Update Secondary Information
+        Optional.ofNullable(request.getSecondaryInfo()).ifPresent(secondaryInfo -> {
+            EmployeeSecondaryInfo existingSecondaryInfo = secondaryInfoRepository
+                    .findById(employeeId)
+                    .orElseThrow(() -> new EntityNotFoundException("Employee Secondary Information not found for ID: " + employeeId));
+            existingSecondaryInfo.setDateOfBirth(secondaryInfo.getDateOfBirth());
+            existingSecondaryInfo.setNationality(secondaryInfo.getNationality());
+            existingSecondaryInfo.setMaritalStatus(secondaryInfo.getMaritalStatus());
+            secondaryInfoRepository.save(existingSecondaryInfo);
+        });
+    
+        // Update Address Information
+        if (request.getAddresses() != null) {
+            addressInfoRepository.deleteByEmployeeId(employeeId);
+            request.getAddresses().forEach(address -> {
+                address.setEmployeeId(employeeId);
+                addressInfoRepository.save(address);
+            });
+        }
+    
+        
+    
+        // Update Bank Details
+        Optional.ofNullable(request.getBankDetails()).ifPresent(bankDetails -> {
+            EmployeeBankDetails existingBankDetails = bankDetailsRepository
+                    .findById(employeeId)
+                    .orElseThrow(() -> new EntityNotFoundException("Bank Details not found"));
+            existingBankDetails.setAccountNumber(bankDetails.getAccountNumber());
+            existingBankDetails.setBankName(bankDetails.getBankName());
+            existingBankDetails.setIfscCode(bankDetails.getIfscCode());
+            bankDetailsRepository.save(existingBankDetails);
+        });
+    
+        // Update Education Information
+        if (request.getEducationInfos() != null) {
+            educationInfoRepository.deleteByEmployeeId(employeeId);
+            request.getEducationInfos().forEach(education -> {
+                education.setEmployeeId(employeeId);
+                educationInfoRepository.save(education);
+            });
+        }
+    
+        // Update Contact Information
+        if (request.getContactInfos() != null) {
+            contactInfoRepository.deleteByEmployeeId(employeeId);
+            request.getContactInfos().forEach(contact -> {
+                contact.setEmployeeId(employeeId);
+                contactInfoRepository.save(contact);
+            });
+        }
+    
+               /* // Update Education Details
+                if (request.getEducationInfos() != null) {
+                    educationInfoRepository.deleteByEmployeeId(employeeId);
+                    request.getEducationInfos().forEach(education -> {
+                        education.setEmployeeId(employeeId);
+                        educationInfoRepository.save(education);
+                    });
+                }*/
+        
+         
+    
+        // Fetch and return the updated Mentor Detail
+        return mentorRepository.findById(employeeId)
+                .orElseThrow(() -> new EntityNotFoundException("Mentor not found for ID: " + employeeId));
     }
+
 
     
-
-    // Update Bank Details
-    Optional.ofNullable(request.getBankDetails()).ifPresent(bankDetails -> {
-        EmployeeBankDetails existingBankDetails = bankDetailsRepository
-                .findById(employeeId)
-                .orElseThrow(() -> new EntityNotFoundException("Bank Details not found"));
-        existingBankDetails.setAccountNumber(bankDetails.getAccountNumber());
-        existingBankDetails.setBankName(bankDetails.getBankName());
-        existingBankDetails.setIfscCode(bankDetails.getIfscCode());
-        bankDetailsRepository.save(existingBankDetails);
-    });
-
-    // Update Education Information
-    if (request.getEducationInfos() != null) {
-        educationInfoRepository.deleteByEmployeeId(employeeId);
-        request.getEducationInfos().forEach(education -> {
-            education.setEmployeeId(employeeId);
-            educationInfoRepository.save(education);
-        });
-    }
-
-    // Update Contact Information
-    if (request.getContactInfos() != null) {
-        contactInfoRepository.deleteByEmployeeId(employeeId);
-        request.getContactInfos().forEach(contact -> {
-            contact.setEmployeeId(employeeId);
-            contactInfoRepository.save(contact);
-        });
-    }
-
-           /* // Update Education Details
-            if (request.getEducationInfos() != null) {
-                educationInfoRepository.deleteByEmployeeId(employeeId);
-                request.getEducationInfos().forEach(education -> {
-                    education.setEmployeeId(employeeId);
-                    educationInfoRepository.save(education);
-                });
-            }*/
-    
-     
-
-    // Fetch and return the updated Mentor Detail
-    return mentorRepository.findById(employeeId)
-            .orElseThrow(() -> new EntityNotFoundException("Mentor not found for ID: " + employeeId));
-}
-
-
-
-
-
-
-
-
-
 // add new mentor details
 @Transactional
 public List<EmployeeEducationInfo> addEducation(Long employeeId, List<EmployeeEducationInfo> educationInfos) {

@@ -1,6 +1,7 @@
 package com.example.lms.controller;
 
 import com.example.lms.security.JwtTokenUtil;
+import com.example.lms.service.BatchDetailsService;
 import com.example.lms.service.EmployeeService;
 import com.example.lms.service.MentorSearchService;
 import com.example.lms.service.MentorService;
@@ -10,8 +11,10 @@ import jakarta.validation.Valid;
 
 import com.example.lms.dto.MentorCreationRequest;
 import com.example.lms.dto.MentorUpdateRequest;
+import com.example.lms.entity.BatchDetails;
 import com.example.lms.entity.EmployeeAddressInfo;
 import com.example.lms.entity.EmployeeBankDetails;
+import com.example.lms.entity.EmployeeBatch;
 import com.example.lms.entity.EmployeeContactInfo;
 import com.example.lms.entity.EmployeeEducationInfo;
 import com.example.lms.entity.EmployeeExperienceInfo;
@@ -35,14 +38,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/mentors")
 public class MentorController {
 
+    
+    private final BatchDetailsService batchDetailsService;
+
     private final MentorService mentorService;
     private final MentorSearchService mentorSearchService;
 
 
     @Autowired
-    public MentorController(MentorService mentorService, MentorSearchService mentorSearchService) {
+    public MentorController(MentorService mentorService, MentorSearchService mentorSearchService, BatchDetailsService batchDetailsService) {
         this.mentorService = mentorService;
         this.mentorSearchService = mentorSearchService;
+        this.batchDetailsService = batchDetailsService;
+
 
     }
 
@@ -64,79 +72,6 @@ public class MentorController {
     
 }
 
-
-@GetMapping("/search/{employeeId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Map<String, Object>> getMentorDetails(@PathVariable Long employeeId) {
-        Map<String, Object> mentorDetails = mentorSearchService.getMentorDetails(employeeId);
-        return ResponseEntity.ok(mentorDetails);
-    }
-
-
-
-    // Fetch Primary Information
-    @GetMapping("/search/{employeeId}/primary-info")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<EmployeePrimaryInformation> getPrimaryInfo(@PathVariable Long employeeId) {
-        EmployeePrimaryInformation primaryInfo = mentorSearchService.getPrimaryInfo(employeeId);
-        return ResponseEntity.ok(primaryInfo);
-    }
-
-    // Fetch Address Information
-    @GetMapping("/search/{employeeId}/address")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<EmployeeAddressInfo>> getAddressInfo(@PathVariable Long employeeId) {
-        List<EmployeeAddressInfo> addresses = mentorSearchService.getAddressInfo(employeeId);
-        return ResponseEntity.ok(addresses);
-    }
-
-    // Fetch Bank Details
-    @GetMapping("/search/{employeeId}/bank-details")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<EmployeeBankDetails>> getBankDetails(@PathVariable Long employeeId) {
-        List<EmployeeBankDetails> bankDetails = mentorSearchService.getBankDetails(employeeId);
-        return ResponseEntity.ok(bankDetails);
-    }
-
-    // Fetch Education Information
-    @GetMapping("/search/{employeeId}/education")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<EmployeeEducationInfo>> getEducationInfo(@PathVariable Long employeeId) {
-        List<EmployeeEducationInfo> educationInfos = mentorSearchService.getEducationInfo(employeeId);
-        return ResponseEntity.ok(educationInfos);
-    }
-
-    // Fetch Contact Information
-    @GetMapping("/search/{employeeId}/contact")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<EmployeeContactInfo>> getContactInfo(@PathVariable Long employeeId) {
-        List<EmployeeContactInfo> contactInfos = mentorSearchService.getContactInfo(employeeId);
-        return ResponseEntity.ok(contactInfos);
-    }
-
-    // Fetch Experience Information
-    @GetMapping("/search/{employeeId}/experience")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<EmployeeExperienceInfo>> getExperienceInfo(@PathVariable Long employeeId) {
-        List<EmployeeExperienceInfo> experienceInfos = mentorSearchService.getExperienceInfo(employeeId);
-        return ResponseEntity.ok(experienceInfos);
-    }
-
-    // Fetch Technical Skills Information
-    @GetMapping("/search/{employeeId}/technical-skills")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<EmployeeTechnicalSkillsInfo>> getTechnicalSkillsInfo(@PathVariable Long employeeId) {
-        List<EmployeeTechnicalSkillsInfo> technicalSkills = mentorSearchService.getTechnicalSkillsInfo(employeeId);
-        return ResponseEntity.ok(technicalSkills);
-    }
-
-    // Fetch Secondary Information
-    @GetMapping("/search/{employeeId}/secondary-info")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Optional<EmployeeSecondaryInfo>> getSecondaryInfo(@PathVariable Long employeeId) {
-        Optional<EmployeeSecondaryInfo> secondaryInfo = mentorSearchService.getSecondaryInfo(employeeId);
-        return ResponseEntity.ok(secondaryInfo);
-    }
 
 
 
@@ -256,16 +191,58 @@ public ResponseEntity<List<EmployeeTechnicalSkillsInfo>> addTechnicalSkills(
 
 
  
-    // Endpoint to fully update mentor details by employee ID
-    @PatchMapping("/update/{employeeId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<MentorDetail> updateMentorDetails(@PathVariable Long employeeId,
-                                                             @RequestBody MentorUpdateRequest request) {
-        MentorDetail updatedMentor = mentorService.updateMentorDetails(employeeId, request);
-        return new ResponseEntity<>(updatedMentor, HttpStatus.OK);
-    }
- 
+     //@PatchMapping("/update/{employeeId}")
+     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+     public ResponseEntity<MentorDetail> updateMentorDetails(@PathVariable Long employeeId,
+                                                              @RequestBody MentorUpdateRequest request) {
+         MentorDetail updatedMentor = mentorService.updateMentorDetails(employeeId, request);
+         return new ResponseEntity<>(updatedMentor, HttpStatus.OK);
+     }
 
+
+
+
+
+
+      @GetMapping("/search/{batchId}")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_MENTOR')")
+
+    public ResponseEntity<BatchDetails> getBatchById(@PathVariable Long batchId) {
+        try {
+            BatchDetails batchDetails = batchDetailsService.getBatchById(batchId);
+            return new ResponseEntity<>(batchDetails, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Batch ID not found
+        }
+    }
+
+
+    @GetMapping("/search/employee/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<List<EmployeeBatch>> getBatchesByEmployeeId(@PathVariable Long employeeId) {
+        try {
+            List<EmployeeBatch> employeeBatches = batchDetailsService.getBatchesByEmployeeId(employeeId);
+            return new ResponseEntity<>(employeeBatches, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Employee ID not found
+        }
+    }
+
+
+
+
+    @GetMapping("/search/mentor/{mentorId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_MENTOR')")
+    public ResponseEntity<List<BatchDetails>> getBatchesByMentorId(@PathVariable Long mentorId) {
+        try {
+            List<BatchDetails> batches = batchDetailsService.getBatchesByMentorId(mentorId);
+            return new ResponseEntity<>(batches, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Mentor ID not found
+        }
+}
  
  
 }

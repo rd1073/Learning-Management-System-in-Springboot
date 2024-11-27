@@ -3,11 +3,16 @@
 package com.example.lms.service;
 
 import com.example.lms.entity.BatchDetails;
+import com.example.lms.entity.EmployeeBatch;
 import com.example.lms.entity.EmployeePrimaryInformation;
 import com.example.lms.entity.MentorDetail;
 import com.example.lms.repository.BatchDetailsRepository;
+import com.example.lms.repository.EmployeeBatchRepository;
 import com.example.lms.repository.EmployeePrimaryInformationRepository;
 import com.example.lms.repository.MentorRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +27,9 @@ public class BatchDetailsService {
 
     @Autowired
     private EmployeePrimaryInformationRepository employeePrimaryInformationRepository;
+
+    @Autowired
+    private EmployeeBatchRepository employeeBatchRepository;
 
    
     public BatchDetails createBatch(BatchDetails batchDetails) {
@@ -43,8 +51,19 @@ public class BatchDetailsService {
     }
 
 
+    public BatchDetails getBatchById(Long batchId) {
+        return batchDetailsRepository.findByBatchId(batchId);
+                //.orElseThrow(() -> new IllegalArgumentException("Batch not found with ID: " + batchId));
+    }
+
+public List<EmployeeBatch> getBatchesByEmployeeId(Long employeeId) {
+        return employeeBatchRepository.findByEmployeeId(employeeId);
+    }
 
 
+    public List<BatchDetails> getBatchesByMentorId(Long mentorId) {
+        return batchDetailsRepository.findByMentorId(mentorId);
+    }
 
     public BatchDetails updateBatch(Long batchId, BatchDetails batchDetails) {
         // Fetch the existing batch using the batch ID

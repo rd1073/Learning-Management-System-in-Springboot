@@ -13,6 +13,8 @@ public interface MentorRepository extends JpaRepository<MentorDetail, Long> {
 
     //MentorDetail findByEmployeeId(Long employeeId); 
     Optional<MentorDetail> findByEmployeeId(Long employeeId);
+    Optional<MentorDetail> findById(Long employeeId);
+
     // Ensure this method exists
 
 }

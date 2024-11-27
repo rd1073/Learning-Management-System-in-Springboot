@@ -17,4 +17,3 @@ public class MentorUpdateRequest {
     private List<EmployeeExperienceInfo> experienceInfos;
     private List<EmployeeTechnicalSkillsInfo> technicalSkills;
 }
-
