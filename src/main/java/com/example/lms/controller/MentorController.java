@@ -46,10 +46,11 @@ public class MentorController {
 
 
     @Autowired
-    public MentorController(MentorService mentorService, MentorSearchService mentorSearchService, BatchDetailsService batchDetailsService) {
+    public MentorController(EmployeeService employeeService,MentorService mentorService, MentorSearchService mentorSearchService, BatchDetailsService batchDetailsService) {
         this.mentorService = mentorService;
         this.mentorSearchService = mentorSearchService;
         this.batchDetailsService = batchDetailsService;
+        
 
 
     }
@@ -191,7 +192,7 @@ public ResponseEntity<List<EmployeeTechnicalSkillsInfo>> addTechnicalSkills(
 
 
  
-     //@PatchMapping("/update/{employeeId}")
+     @PatchMapping("/update/{employeeId}")
      @PreAuthorize("hasAuthority('ROLE_ADMIN')")
      public ResponseEntity<MentorDetail> updateMentorDetails(@PathVariable Long employeeId,
                                                               @RequestBody MentorUpdateRequest request) {
@@ -244,5 +245,8 @@ public ResponseEntity<List<EmployeeTechnicalSkillsInfo>> addTechnicalSkills(
         }
 }
  
+
+
+
  
 }

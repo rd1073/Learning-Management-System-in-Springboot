@@ -58,6 +58,27 @@ public class EmployeeService {
         }
     }
 
+
+
+
+
+
+    
+
+
+    public void disapproveEmployee(Long employeeId, String reason) {
+        // Find the employee by ID
+        EmployeePrimaryInformation employee = employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found with ID: " + employeeId));
+
+        // Update approved status and set the reason
+        employee.setApproved(false);
+        employee.setReason(reason);
+
+        // Save changes
+        employeeRepository.save(employee);
+    }
+
         
         
     }

@@ -3,6 +3,7 @@ package com.example.lms.controller;
 import com.example.lms.entity.BatchDetails;
 import com.example.lms.entity.EmployeePrimaryInformation;
 import com.example.lms.service.BatchDetailsService;
+import com.example.lms.service.EmployeeService;
 import com.example.lms.service.MentorSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,16 @@ public class MentorSearchController {
 
     private final MentorSearchService mentorSearchService;
     private final BatchDetailsService batchDetailsService;
+    private final EmployeeService employeeService;
+   
 
 
     @Autowired
-    public MentorSearchController(MentorSearchService mentorSearchService, BatchDetailsService batchDetailsService) {
+    public MentorSearchController( EmployeeService employeeService, MentorSearchService mentorSearchService, BatchDetailsService batchDetailsService) {
         this.batchDetailsService = batchDetailsService;
 
         this.mentorSearchService = mentorSearchService;
+        this.employeeService = employeeService;
     }
 
 
@@ -44,6 +48,20 @@ public class MentorSearchController {
             return ResponseEntity.status(500).body("Error fetching batch: " + e.getMessage());
         }
     }
+
+
+
+    @PostMapping("/{employeeId}/disapprove")
+    @PreAuthorize("hasAuthority('ROLE_MENTOR')")
+    public ResponseEntity<String> disapproveEmployee(
+            @PathVariable Long employeeId,
+            @RequestBody String reason) {
+        // Call the service to disapprove the employee
+        employeeService.disapproveEmployee(employeeId, reason);
+    
+        return ResponseEntity.ok("Employee disapproved with reason: " + reason);
+    }
+
 
 
     @GetMapping("/{batchId}/employees")

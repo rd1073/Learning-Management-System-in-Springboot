@@ -37,7 +37,18 @@ public class EmployeePrimaryInformation {
     @Column(name = "approved", nullable = false)
     private Boolean approved = false;
 
+    @Column(nullable = true, length = 255)
+    private String reason; // Reason for disapproval
+
     // Getters and Setters
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
 
     public void setApproved(Boolean approved) {
         this.approved = approved;
