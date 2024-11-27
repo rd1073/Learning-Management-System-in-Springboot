@@ -23,8 +23,7 @@ public class BatchDetails {
     @Column(name = "mentor_id")
     private Long mentorId;
 
-    @Column(name = "employee_id")
-    private Long employeeId;
+    
 
     @Column(name = "technologies")
     private String technologies;
@@ -73,13 +72,7 @@ public class BatchDetails {
         this.mentorId = mentorId;
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
-    }
+     
 
     public String getTechnologies() {
         return technologies;

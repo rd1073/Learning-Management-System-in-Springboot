@@ -1,4 +1,4 @@
-package com.example.lms.controller;
+/*package com.example.lms.controller;
 
 import com.example.lms.dto.MentorCreationRequest;
 import com.example.lms.dto.MentorUpdateRequest;
@@ -77,5 +77,35 @@ public class BatchController {
     public ResponseEntity<String> deleteBatch(@PathVariable Long batchId) {
         batchService.deleteBatch(batchId);
         return ResponseEntity.ok("Batch deleted successfully.");
+    }
+}
+*/
+ 
+package com.example.lms.controller;
+
+import com.example.lms.entity.BatchDetails;
+import com.example.lms.service.BatchDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/batches")
+public class BatchDetailsController {
+
+    @Autowired
+    private BatchDetailsService batchDetailsService;
+
+    @PostMapping("/create-batch")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<BatchDetails> createBatch(@RequestBody BatchDetails batchDetails) {
+        try {
+            BatchDetails createdBatch = batchDetailsService.createBatch(batchDetails);
+            return new ResponseEntity<>(createdBatch, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 }

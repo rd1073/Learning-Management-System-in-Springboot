@@ -1,4 +1,4 @@
-package com.example.lms.service;
+/*package com.example.lms.service;
 
 import com.example.lms.dto.MentorCreationRequest;
 import com.example.lms.dto.MentorUpdateRequest;
@@ -91,5 +91,56 @@ public class BatchDetailsService {
             throw new EntityNotFoundException("Batch not found with ID: " + batchId);
         }
         batchDetailsRepository.deleteById(batchId);
+    }
+}
+*/
+ 
+
+package com.example.lms.service;
+
+import com.example.lms.entity.BatchDetails;
+import com.example.lms.entity.EmployeePrimaryInformation;
+import com.example.lms.entity.MentorDetail;
+import com.example.lms.repository.BatchDetailsRepository;
+import com.example.lms.repository.EmployeePrimaryInformationRepository;
+import com.example.lms.repository.MentorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class BatchDetailsService {
+
+    @Autowired
+    private BatchDetailsRepository batchDetailsRepository;
+
+    @Autowired
+    private MentorRepository mentorRepository;
+
+    @Autowired
+    private EmployeePrimaryInformationRepository employeePrimaryInformationRepository;
+
+    /**
+     * Create a new batch and set the mentor name by fetching the corresponding employee ID.
+     *
+     * @param batchDetails the batch details to be created
+     * @return the saved batch details
+     * @throws IllegalArgumentException if the mentor ID or employee ID is invalid
+     */
+    public BatchDetails createBatch(BatchDetails batchDetails) {
+        // Fetch mentor details using the mentor ID
+        MentorDetail mentor = mentorRepository
+                .findById(batchDetails.getMentorId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid mentor ID: " + batchDetails.getMentorId()));
+
+        // Fetch employee details using the employee ID from the mentor record
+        EmployeePrimaryInformation employee = employeePrimaryInformationRepository
+                .findById(mentor.getEmployeeId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid employee ID: " + mentor.getEmployeeId()));
+
+        // Set the mentor's name in the batch details
+        batchDetails.setMentorName(employee.getName());
+
+        // Save the batch details
+        return batchDetailsRepository.save(batchDetails);
     }
 }
