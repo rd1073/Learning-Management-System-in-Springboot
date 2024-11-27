@@ -11,7 +11,5 @@ public interface EmployeePrimaryInformationRepository extends JpaRepository<Empl
     Optional<EmployeePrimaryInformation> findByUsername(String username);    
     void deleteByEmployeeId(Long employeeId);
     
-    @Query("SELECT e FROM EmployeePrimaryInformation e WHERE e.employeeId = :employeeId")
-EmployeePrimaryInformation findEmployeeById(@Param("employeeId") Long employeeId);
-
+     
 }

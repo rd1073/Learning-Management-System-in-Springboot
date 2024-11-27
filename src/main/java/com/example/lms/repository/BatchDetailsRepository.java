@@ -9,4 +9,6 @@ import com.example.lms.entity.BatchDetails;
 public interface BatchDetailsRepository extends JpaRepository<BatchDetails, Long> {
 
     BatchDetails findByBatchId(Long batchId);
+    //BatchDetails deleteByEmployeeId(Long employeeId);
+
 }

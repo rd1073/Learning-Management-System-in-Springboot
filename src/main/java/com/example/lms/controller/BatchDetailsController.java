@@ -108,4 +108,29 @@ public class BatchDetailsController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+
+    @PatchMapping("/update/{batchId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<BatchDetails> updateBatch(@PathVariable Long batchId, @RequestBody BatchDetails batchDetails) {
+        try {
+            BatchDetails updatedBatch = batchDetailsService.updateBatch(batchId, batchDetails);
+            return new ResponseEntity<>(updatedBatch, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);  // If batch or mentor ID is invalid
+        }
+    }
+
+
+    @DeleteMapping("/delete/{batchId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<String> deleteBatch(@PathVariable Long batchId) {
+        try {
+            batchDetailsService.deleteBatch(batchId);
+            return new ResponseEntity<>("Batch deleted successfully", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>("Batch not found", HttpStatus.NOT_FOUND);  // If batch ID is invalid
+        }
+    }
 }
+

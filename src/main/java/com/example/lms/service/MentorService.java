@@ -10,6 +10,7 @@ import com.example.lms.entity.EmployeePrimaryInformation;
 import com.example.lms.entity.EmployeeSecondaryInfo;
 import com.example.lms.entity.EmployeeTechnicalSkillsInfo;
 import com.example.lms.entity.MentorDetail;
+import com.example.lms.repository.BatchDetailsRepository;
 import com.example.lms.repository.EmployeeAddressInfoRepository;
 import com.example.lms.repository.EmployeeBankDetailsRepository;
 import com.example.lms.repository.EmployeeContactInfoRepository;
@@ -91,6 +92,8 @@ public class MentorService {
         }
         String hashedPassword = passwordEncoder.encode(rawPassword);
         primaryInfo.setPassword(hashedPassword);
+        primaryInfo.setApproved(true);
+
 
         EmployeePrimaryInformation savedPrimaryInfo = employeePrimaryInfoRepository.save(primaryInfo);
 
@@ -330,6 +333,8 @@ public void deleteMentor(Long employeeId) {
     try {
         // Step 1: Delete Address Info
         addressInfoRepository.deleteByEmployeeId(employeeId);
+        //BatchDetailsRepository.deleteByEmployeeId(employeeId);
+
         
         // Step 2: Delete Bank Details
         bankDetailsRepository.deleteByEmployeeId(employeeId);
