@@ -55,7 +55,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
          .requestMatchers("/api/register", "/api/login", "/error", "/api/employee/register").permitAll() // Publicly accessible endpoints
           .requestMatchers("/api/admin/**", "/api/mentors/**","/api/batches/**").hasAuthority("ROLE_ADMIN")
          .requestMatchers("/api/employees/**").hasAuthority("ROLE_EMPLOYEE")
-         .requestMatchers("/api/attendance/mark","api/mock/create","api/mock-rating","api/mentor/**").hasAuthority("ROLE_MENTOR")
+         .requestMatchers("/api/attendance/mark","api/mock/create","api/mock-rating","api/mentor/**", "api/export/**").hasAuthority("ROLE_MENTOR")
 
          .anyRequest().authenticated() // Secure all other endpoints
      ) 

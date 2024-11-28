@@ -49,7 +49,10 @@ public class EmployeePrimaryInformation {
     public void setReason(String reason) {
         this.reason = reason;
     }
-
+    public boolean getApproved() { // Correct getter for boolean field
+        return approved;
+    }
+    
     public void setApproved(Boolean approved) {
         this.approved = approved;
     }
