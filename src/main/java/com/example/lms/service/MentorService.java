@@ -40,7 +40,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MentorService {
+public class MentorService implements MentorServiceInterface{
 
     private final MentorRepository mentorRepository;
     private final EmployeePrimaryInformationRepository employeePrimaryInfoRepository;
