@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.lms.Exceptions.DuplicateKeyException;
 import com.example.lms.entity.BatchDetails;
 import com.example.lms.service.AdminApprovalService;
 import com.example.lms.service.EmployeeService;
@@ -24,27 +25,27 @@ import jakarta.persistence.EntityNotFoundException;
 @RequestMapping("/api/admin")
 public class AdminApprovalController {
 
+    @Autowired
     private final EmployeeUpdateService employeeUpdateService;
     private final AdminApprovalService adminApprovalService;
-        
 
-
-    @Autowired
-    public AdminApprovalController( EmployeeUpdateService employeeUpdateService, AdminApprovalService adminApprovalService) {
+    public AdminApprovalController(EmployeeUpdateService employeeUpdateService,
+            AdminApprovalService adminApprovalService) {
         this.employeeUpdateService = employeeUpdateService;
         this.adminApprovalService = adminApprovalService;
-        
+
     }
 
     // Approve an employee
     @PutMapping("/approve/{employeeId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<String> approveEmployee(@PathVariable Long employeeId, @RequestBody BatchDetails batchDetails) {
+    public ResponseEntity<String> approveEmployee(@PathVariable Long employeeId,
+            @RequestBody BatchDetails batchDetails) {
         try {
             Long batchId = batchDetails.getBatchId();
             adminApprovalService.approveEmployee(employeeId, batchId);
             return ResponseEntity.ok("Employee approved successfully.");
-        } catch (EntityNotFoundException e) {
+        } catch (DuplicateKeyException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Employee not found with ID: " + employeeId);
         } catch (Exception e) {
@@ -52,10 +53,6 @@ public class AdminApprovalController {
                     .body("Error occurred during approval: " + e.getMessage());
         }
     }
-
-
-   
-
 
     // Delete an employee
     @DeleteMapping("/{employeeId}/delete-employee")
