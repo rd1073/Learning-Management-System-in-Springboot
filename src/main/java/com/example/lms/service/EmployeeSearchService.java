@@ -116,10 +116,6 @@ public class EmployeeSearchService {
         return secondaryInfoRepository.findByEmployeeId(employeeId);
     }
 
-    /**
-     * Search for all employees with a specific skill.
-     * @param skillName The name of the skill.
-     * @return A list of employees with the given skill.
-     */
+   
       
 }

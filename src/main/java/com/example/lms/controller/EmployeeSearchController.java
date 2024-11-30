@@ -1,4 +1,4 @@
-package com.example.lms.controller;
+/*package com.example.lms.controller;
 
 import com.example.lms.entity.*;
 import com.example.lms.service.EmployeeSearchService;
@@ -95,4 +95,116 @@ public class EmployeeSearchController {
     }
 
     
+}*/
+
+
+
+package com.example.lms.controller;
+
+import com.example.lms.entity.*;
+import com.example.lms.Exceptions.ResourceNotFoundException;
+import com.example.lms.service.EmployeeSearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/employee-search")
+public class EmployeeSearchController {
+
+    private final EmployeeSearchService employeeSearchService;
+
+    @Autowired
+    public EmployeeSearchController(EmployeeSearchService employeeSearchService) {
+        this.employeeSearchService = employeeSearchService;
+    }
+
+    // Fetch All Employee Details
+    @GetMapping("/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getEmployeeDetails(@PathVariable Long employeeId) {
+        try {
+            Map<String, Object> employeeDetails = employeeSearchService.getEmployeeDetails(employeeId);
+            return ResponseEntity.ok(employeeDetails);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    // Fetch Primary Information
+    @GetMapping("/{employeeId}/primary-info")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getPrimaryInfo(@PathVariable Long employeeId) {
+        try {
+            EmployeePrimaryInformation primaryInfo = employeeSearchService.getPrimaryInfo(employeeId);
+            return ResponseEntity.ok(primaryInfo);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    // Fetch Address Information
+    @GetMapping("/{employeeId}/address")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getAddressInfo(@PathVariable Long employeeId) {
+        List<EmployeeAddressInfo> addresses = employeeSearchService.getAddressInfo(employeeId);
+        return ResponseEntity.ok(addresses);
+    }
+
+    // Fetch Bank Details
+    @GetMapping("/{employeeId}/bank-details")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getBankDetails(@PathVariable Long employeeId) {
+        List<EmployeeBankDetails> bankDetails = employeeSearchService.getBankDetails(employeeId);
+        return ResponseEntity.ok(bankDetails);
+    }
+
+    // Fetch Education Information
+    @GetMapping("/{employeeId}/education")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getEducationInfo(@PathVariable Long employeeId) {
+        List<EmployeeEducationInfo> educationInfos = employeeSearchService.getEducationInfo(employeeId);
+        return ResponseEntity.ok(educationInfos);
+    }
+
+    // Fetch Contact Information
+    @GetMapping("/{employeeId}/contact")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getContactInfo(@PathVariable Long employeeId) {
+        List<EmployeeContactInfo> contactInfos = employeeSearchService.getContactInfo(employeeId);
+        return ResponseEntity.ok(contactInfos);
+    }
+
+    // Fetch Experience Information
+    @GetMapping("/{employeeId}/experience")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getExperienceInfo(@PathVariable Long employeeId) {
+        List<EmployeeExperienceInfo> experienceInfos = employeeSearchService.getExperienceInfo(employeeId);
+        return ResponseEntity.ok(experienceInfos);
+    }
+
+    // Fetch Technical Skills Information
+    @GetMapping("/{employeeId}/technical-skills")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getTechnicalSkillsInfo(@PathVariable Long employeeId) {
+        List<EmployeeTechnicalSkillsInfo> technicalSkills = employeeSearchService.getTechnicalSkillsInfo(employeeId);
+        return ResponseEntity.ok(technicalSkills);
+    }
+
+    // Fetch Secondary Information
+    @GetMapping("/{employeeId}/secondary-info")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> getSecondaryInfo(@PathVariable Long employeeId) {
+        Optional<EmployeeSecondaryInfo> secondaryInfo = employeeSearchService.getSecondaryInfo(employeeId);
+        return ResponseEntity.ok(secondaryInfo);
+         
+    }
 }
+
+ 
