@@ -44,11 +44,7 @@ public class EmployeeSearchService {
         this.secondaryInfoRepository = secondaryInfoRepository;
     }
 
-    /**
-     * Fetch all details of an employee by ID.
-     * @param employeeId The ID of the employee.
-     * @return A map containing all details of the employee.
-     */
+     
     @Transactional
     public Map<String, Object> getEmployeeDetails(Long employeeId) {
         // Fetch primary information
