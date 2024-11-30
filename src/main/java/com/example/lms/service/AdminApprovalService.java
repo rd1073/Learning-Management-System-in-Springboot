@@ -112,6 +112,10 @@ public class AdminApprovalService {
 }*/
 
 
+
+
+
+/*
 package com.example.lms.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,4 +173,73 @@ public class AdminApprovalService {
         // Optionally return success or confirmation message
         System.out.println("Employee " + employeeId + " approved and assigned to batch " + batchId);
     }
+}*/
+
+
+
+
+
+package com.example.lms.service;
+
+import com.example.lms.entity.BatchDetails;
+import com.example.lms.entity.EmployeeBatch;
+import com.example.lms.entity.EmployeePrimaryInformation;
+import com.example.lms.repository.BatchDetailsRepository;
+import com.example.lms.repository.EmployeeBatchRepository;
+import com.example.lms.repository.EmployeePrimaryInformationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+
+@Service
+@Transactional
+public class AdminApprovalService implements AdminApprovalServiceInterface {
+
+    @Autowired
+    private EmployeePrimaryInformationRepository primaryInfoRepository;
+
+    @Autowired
+    private BatchDetailsRepository batchDetailsRepository;
+
+    @Autowired
+    private EmployeeBatchRepository employeeBatchRepository;
+
+    @Override
+    public void approveEmployee(Long employeeId, Long batchId) throws EntityNotFoundException, IllegalStateException {
+        try {
+            // Step 1: Ensure the employee exists
+            EmployeePrimaryInformation primaryInfo = primaryInfoRepository.findById(employeeId)
+                    .orElseThrow(() -> new EntityNotFoundException("Employee not found with ID: " + employeeId));
+
+            // Step 2: Ensure the batch exists
+            BatchDetails batch = batchDetailsRepository.findByBatchId(batchId);
+            if (batch == null) {
+                throw new EntityNotFoundException("Batch not found with ID: " + batchId);
+            }
+
+            // Step 3: Create and save the employee-batch association
+            EmployeeBatch employeeBatch = new EmployeeBatch();
+            employeeBatch.setEmployeeId(primaryInfo.getEmployeeId());
+            employeeBatch.setBatchId(batch.getBatchId());
+            employeeBatch.setEmployeeName(primaryInfo.getName());
+            employeeBatch.setBatchName(batch.getBatchName());
+
+            // Step 4: Approve the employee
+            primaryInfo.setApproved(true);
+            primaryInfoRepository.save(primaryInfo);
+
+            // Step 5: Save the employee-batch association
+            employeeBatchRepository.save(employeeBatch);
+
+            // Optional logging or confirmation
+            System.out.println("Employee " + employeeId + " approved and assigned to batch " + batchId);
+        } catch (EntityNotFoundException e) {
+            throw e; // Rethrow to be handled by the controller
+        } catch (Exception e) {
+            throw new IllegalStateException("Error occurred during approval: " + e.getMessage(), e);
+        }
+    }
 }
+
