@@ -1,4 +1,4 @@
-package com.example.lms.controller;
+/*package com.example.lms.controller;
 
 import java.util.List;
 
@@ -93,4 +93,111 @@ public class EmployeeUpdateController {
     }
 
     
+}*/
+
+
+
+package com.example.lms.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.lms.Exceptions.InvalidInputException;
+import com.example.lms.dto.EmployeeUpdateRequest;
+import com.example.lms.entity.*;
+import com.example.lms.service.EmployeeUpdateService;
+
+import jakarta.persistence.EntityNotFoundException;
+
+
+@RestController
+@RequestMapping("/api/employees")
+public class EmployeeUpdateController {
+
+    private final EmployeeUpdateService employeeUpdateService;
+
+    @Autowired
+    public EmployeeUpdateController(EmployeeUpdateService employeeUpdateService) {
+        this.employeeUpdateService = employeeUpdateService;
+    }
+
+    @PatchMapping("/update/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
+    public ResponseEntity<String> updateEmployeeDetails(
+            @PathVariable Long employeeId,
+            @RequestBody EmployeeUpdateRequest updateRequest) {
+        try {
+            employeeUpdateService.updateEmployeeDetails(employeeId, updateRequest);
+            return ResponseEntity.ok("Employee details updated successfully. Waiting for Admin approval.");
+        } catch (EntityNotFoundException | InvalidInputException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-education/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
+    public ResponseEntity<?> addEducation(
+            @PathVariable Long employeeId,
+            @RequestBody List<EmployeeEducationInfo> educationInfos) {
+        try {
+            List<EmployeeEducationInfo> savedEducationInfos = employeeUpdateService.addEducation(employeeId, educationInfos);
+            return ResponseEntity.ok(savedEducationInfos);
+        } catch (EntityNotFoundException | InvalidInputException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-experience/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
+    public ResponseEntity<?> addExperience(
+            @PathVariable Long employeeId,
+            @RequestBody List<EmployeeExperienceInfo> experienceInfos) {
+        try {
+            List<EmployeeExperienceInfo> savedExperienceInfos = employeeUpdateService.addExperience(employeeId, experienceInfos);
+            return ResponseEntity.ok(savedExperienceInfos);
+        } catch (EntityNotFoundException | InvalidInputException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-contact/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
+    public ResponseEntity<?> addContact(
+            @PathVariable Long employeeId,
+            @RequestBody List<EmployeeContactInfo> contactInfos) {
+        try {
+            List<EmployeeContactInfo> savedContactInfos = employeeUpdateService.addContact(employeeId, contactInfos);
+            return ResponseEntity.ok(savedContactInfos);
+        } catch (EntityNotFoundException | InvalidInputException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/add-technical-skills/{employeeId}")
+    @PreAuthorize("hasAuthority('ROLE_EMPLOYEE')")
+    public ResponseEntity<?> addTechnicalSkills(
+            @PathVariable Long employeeId,
+            @RequestBody List<EmployeeTechnicalSkillsInfo> technicalSkillsInfos) {
+        try {
+            List<EmployeeTechnicalSkillsInfo> savedSkillsInfos = employeeUpdateService.addTechnicalSkills(employeeId, technicalSkillsInfos);
+            return ResponseEntity.ok(savedSkillsInfos);
+        } catch (EntityNotFoundException | InvalidInputException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An unexpected error occurred: " + e.getMessage());
+        }
+    }
 }
+

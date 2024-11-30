@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class EmployeeSearchService {
+public class EmployeeSearchService implements EmployeeSearchServiceInterface {
 
     private final EmployeePrimaryInformationRepository primaryInfoRepository;
     private final EmployeeAddressInfoRepository addressInfoRepository;

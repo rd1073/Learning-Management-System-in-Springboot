@@ -15,7 +15,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
-public class EmployeeUpdateService {
+public class EmployeeUpdateService implements EmployeeUpdateServiceInterface{
 
     private final EmployeePrimaryInformationRepository employeePrimaryInfoRepository;
     private final EmployeeAddressInfoRepository addressInfoRepository;
