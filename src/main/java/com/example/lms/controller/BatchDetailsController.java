@@ -1,9 +1,9 @@
- 
- /*
 package com.example.lms.controller;
 
 import com.example.lms.entity.BatchDetails;
 import com.example.lms.entity.EmployeeBatch;
+import com.example.lms.Exceptions.DuplicateKeyException;
+import com.example.lms.Exceptions.ResourceNotFoundException;
 import com.example.lms.service.BatchDetailsService;
 
 import java.util.List;
@@ -27,11 +27,10 @@ public class BatchDetailsController {
         try {
             BatchDetails createdBatch = batchDetailsService.createBatch(batchDetails);
             return new ResponseEntity<>(createdBatch, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (DuplicateKeyException ex) {
+            throw new DuplicateKeyException("Batch with the same ID or name already exists.");
         }
     }
-
 
     @PatchMapping("/update/{batchId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -39,11 +38,10 @@ public class BatchDetailsController {
         try {
             BatchDetails updatedBatch = batchDetailsService.updateBatch(batchId, batchDetails);
             return new ResponseEntity<>(updatedBatch, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);  // If batch or mentor ID is invalid
+        } catch (ResourceNotFoundException ex) {
+            throw new ResourceNotFoundException("Batch with ID " + batchId + " not found.");
         }
     }
-
 
     @DeleteMapping("/delete/{batchId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -51,25 +49,21 @@ public class BatchDetailsController {
         try {
             batchDetailsService.deleteBatch(batchId);
             return new ResponseEntity<>("Batch deleted successfully", HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Batch not found", HttpStatus.NOT_FOUND);  // If batch ID is invalid
+        } catch (ResourceNotFoundException ex) {
+            throw new ResourceNotFoundException("Batch with ID " + batchId + " not found.");
         }
     }
 
-
     @GetMapping("/search/{batchId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')
-
     public ResponseEntity<BatchDetails> getBatchById(@PathVariable Long batchId) {
         try {
             BatchDetails batchDetails = batchDetailsService.getBatchById(batchId);
             return new ResponseEntity<>(batchDetails, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Batch ID not found
+        } catch (ResourceNotFoundException ex) {
+            throw new ResourceNotFoundException("Batch with ID " + batchId + " not found.");
         }
     }
-
 
     @GetMapping("/search/employee/{employeeId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -77,88 +71,19 @@ public class BatchDetailsController {
         try {
             List<EmployeeBatch> employeeBatches = batchDetailsService.getBatchesByEmployeeId(employeeId);
             return new ResponseEntity<>(employeeBatches, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Employee ID not found
+        } catch (ResourceNotFoundException ex) {
+            throw new ResourceNotFoundException("Employee with ID " + employeeId + " not found.");
         }
     }
 
-
-
-
     @GetMapping("/search/mentor/{mentorId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    //@PreAuthorize("hasAuthority('ROLE_MENTOR')")
     public ResponseEntity<List<BatchDetails>> getBatchesByMentorId(@PathVariable Long mentorId) {
         try {
             List<BatchDetails> batches = batchDetailsService.getBatchesByMentorId(mentorId);
             return new ResponseEntity<>(batches, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND); // Mentor ID not found
+        } catch (ResourceNotFoundException ex) {
+            throw new ResourceNotFoundException("Mentor with ID " + mentorId + " not found.");
         }
-}
-
-}*/
-
-package com.example.lms.controller;
-
-import com.example.lms.entity.BatchDetails;
-import com.example.lms.entity.EmployeeBatch;
-import com.example.lms.service.BatchDetailsService;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-@RestController
-@RequestMapping("/api/batches")
-public class BatchDetailsController {
-
-    @Autowired
-    private BatchDetailsService batchDetailsService;
-
-    @PostMapping("/create-batch")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<BatchDetails> createBatch(@RequestBody BatchDetails batchDetails) {
-        BatchDetails createdBatch = batchDetailsService.createBatch(batchDetails);
-        return new ResponseEntity<>(createdBatch, HttpStatus.CREATED);
-    }
-
-    @PatchMapping("/update/{batchId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<BatchDetails> updateBatch(@PathVariable Long batchId, @RequestBody BatchDetails batchDetails) {
-        BatchDetails updatedBatch = batchDetailsService.updateBatch(batchId, batchDetails);
-        return new ResponseEntity<>(updatedBatch, HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{batchId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<String> deleteBatch(@PathVariable Long batchId) {
-        batchDetailsService.deleteBatch(batchId);
-        return new ResponseEntity<>("Batch deleted successfully", HttpStatus.OK);
-    }
-
-    @GetMapping("/search/{batchId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<BatchDetails> getBatchById(@PathVariable Long batchId) {
-        BatchDetails batchDetails = batchDetailsService.getBatchById(batchId);
-        return new ResponseEntity<>(batchDetails, HttpStatus.OK);
-    }
-
-    @GetMapping("/search/employee/{employeeId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<EmployeeBatch>> getBatchesByEmployeeId(@PathVariable Long employeeId) {
-        List<EmployeeBatch> employeeBatches = batchDetailsService.getBatchesByEmployeeId(employeeId);
-        return new ResponseEntity<>(employeeBatches, HttpStatus.OK);
-    }
-
-    @GetMapping("/search/mentor/{mentorId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<List<BatchDetails>> getBatchesByMentorId(@PathVariable Long mentorId) {
-        List<BatchDetails> batches = batchDetailsService.getBatchesByMentorId(mentorId);
-        return new ResponseEntity<>(batches, HttpStatus.OK);
     }
 }
