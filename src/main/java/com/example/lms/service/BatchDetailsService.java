@@ -1,5 +1,5 @@
 
-
+/*
 package com.example.lms.service;
 
 import com.example.lms.entity.BatchDetails;
@@ -119,4 +119,121 @@ public List<EmployeeBatch> getBatchesByEmployeeId(Long employeeId) {
 
     // Existing method for creating a batch...
 
+}*/
+
+
+package com.example.lms.service;
+
+import com.example.lms.entity.BatchDetails;
+import com.example.lms.entity.EmployeeBatch;
+import com.example.lms.entity.EmployeePrimaryInformation;
+import com.example.lms.entity.MentorDetail;
+import com.example.lms.Exceptions.ResourceNotFoundException;
+import com.example.lms.repository.BatchDetailsRepository;
+import com.example.lms.repository.EmployeeBatchRepository;
+import com.example.lms.repository.EmployeePrimaryInformationRepository;
+import com.example.lms.repository.MentorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class BatchDetailsService implements BatchDetailsServiceInterface {
+
+    @Autowired
+    private BatchDetailsRepository batchDetailsRepository;
+
+    @Autowired
+    private MentorRepository mentorRepository;
+
+    @Autowired
+    private EmployeePrimaryInformationRepository employeePrimaryInformationRepository;
+
+    @Autowired
+    private EmployeeBatchRepository employeeBatchRepository;
+
+    @Override
+    public BatchDetails createBatch(BatchDetails batchDetails) {
+        MentorDetail mentor = mentorRepository
+                .findById(batchDetails.getMentorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Mentor not found with ID: " + batchDetails.getMentorId()));
+
+        EmployeePrimaryInformation employee = employeePrimaryInformationRepository
+                .findById(mentor.getEmployeeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + mentor.getEmployeeId()));
+
+        batchDetails.setMentorName(employee.getName());
+        return batchDetailsRepository.save(batchDetails);
+    }
+
+    @Override
+    public BatchDetails getBatchById(Long batchId) {
+        return batchDetailsRepository.findById(batchId)
+                .orElseThrow(() -> new ResourceNotFoundException("Batch not found with ID: " + batchId));
+    }
+
+    @Override
+    public List<EmployeeBatch> getBatchesByEmployeeId(Long employeeId) {
+        List<EmployeeBatch> employeeBatches = employeeBatchRepository.findByEmployeeId(employeeId);
+        if (employeeBatches.isEmpty()) {
+            throw new ResourceNotFoundException("No batches found for Employee ID: " + employeeId);
+        }
+        return employeeBatches;
+    }
+
+    @Override
+    public List<BatchDetails> getBatchesByMentorId(Long mentorId) {
+        List<BatchDetails> batches = batchDetailsRepository.findByMentorId(mentorId);
+        if (batches.isEmpty()) {
+            throw new ResourceNotFoundException("No batches found for Mentor ID: " + mentorId);
+        }
+        return batches;
+    }
+
+    @Override
+    public List<EmployeePrimaryInformation> getEmployeesInBatch(Long batchId) {
+        List<EmployeeBatch> employeeBatchList = employeeBatchRepository.findByBatchId(batchId);
+        if (employeeBatchList.isEmpty()) {
+            throw new ResourceNotFoundException("No employees found for Batch ID: " + batchId);
+        }
+
+        List<Long> employeeIds = employeeBatchList.stream()
+                .map(EmployeeBatch::getEmployeeId)
+                .collect(Collectors.toList());
+
+        return employeePrimaryInformationRepository.findAllById(employeeIds);
+    }
+
+    @Override
+    public BatchDetails updateBatch(Long batchId, BatchDetails batchDetails) {
+        BatchDetails existingBatch = batchDetailsRepository
+                .findById(batchId)
+                .orElseThrow(() -> new ResourceNotFoundException("Batch not found with ID: " + batchId));
+
+        MentorDetail mentor = mentorRepository
+                .findById(batchDetails.getMentorId())
+                .orElseThrow(() -> new ResourceNotFoundException("Mentor not found with ID: " + batchDetails.getMentorId()));
+
+        EmployeePrimaryInformation employee = employeePrimaryInformationRepository
+                .findById(mentor.getEmployeeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + mentor.getEmployeeId()));
+
+        existingBatch.setBatchName(batchDetails.getBatchName());
+        existingBatch.setTechnologies(batchDetails.getTechnologies());
+        existingBatch.setMentorId(batchDetails.getMentorId());
+        existingBatch.setMentorName(employee.getName());
+        existingBatch.setStatus(batchDetails.getStatus());
+
+        return batchDetailsRepository.save(existingBatch);
+    }
+
+    @Override
+    public void deleteBatch(Long batchId) {
+        BatchDetails existingBatch = batchDetailsRepository
+                .findById(batchId)
+                .orElseThrow(() -> new ResourceNotFoundException("Batch not found with ID: " + batchId));
+        batchDetailsRepository.delete(existingBatch);
+    }
 }
