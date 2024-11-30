@@ -1,0 +1,872 @@
+{
+	"info": {
+		"_postman_id": "13d50cc7-db52-4711-abfe-a7b3672a1252",
+		"name": "LMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26966864",
+		"_collection_link": "https://grey-spaceship-443954.postman.co/workspace/bb~62bae865-983f-44d6-b8b0-2023bbabf4a3/collection/26966864-13d50cc7-db52-4711-abfe-a7b3672a1252?action=share&source=collection_link&creator=26966864"
+	},
+	"item": [
+		{
+			"name": "ROLE_ADMIN",
+			"item": [
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Batches",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Mentor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Mentor Specific Info",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search Mentor All Details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Batch Details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Batch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Employee and Allot Batch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Batch Details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee Batch Details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Mentor Batch Details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search Employee Specific Info",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search Employee",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Search Employee Copy",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ROLE_EMPLOYEE",
+			"item": [
+				{
+					"name": "Register Employee",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Employee Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ROLE_MENTOR",
+			"item": [
+				{
+					"name": "Get Employee  Specific Info",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employee  Specific Info Copy",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Batch Details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get Employees in a Batch",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Exports",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Mentor Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Mark Attendance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Creat a Mock",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Terminate employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				},
+				{
+					"name": "Mock Rating",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									" \r",
+									"pm.environment.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.globals.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");\r",
+									"pm.collectionVariables.set(\"token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjViNGNlYWUwNWQxYTYyYmE4NTgzYWM5IiwiaWF0IjoxNzA4ODQwMTM0LCJleHAiOjE3MDg5MjY1MzR9.CW5PBlFhJHA7EN4LGdk7TGMpm-TPGmvcnr5qUN5DL0Q",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"emailID\":\"rajeshwari.dhar@gmail.com\",\n    \"password\":\"password\"\n }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						},
+						"description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
